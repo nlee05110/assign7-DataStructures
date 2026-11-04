@@ -2,11 +2,13 @@ package assignment;
 import java.util.EmptyStackException;
 public class Stack<T> implements StackInterface<T> {
     Node<T> head;
+    int size;
     @Override
     public void push(T item) throws EmptyStackException {
         Node<T> newNode = new Node<>(item);
         newNode.next = this.head;
         this.head = newNode;
+        size++;
     }
     @Override
     public T pop() throws EmptyStackException {
@@ -34,7 +36,7 @@ public class Stack<T> implements StackInterface<T> {
 
     @Override
     public int size(){
-        return -1;
+        return this.size;
 
     }
 
@@ -49,15 +51,4 @@ public class Stack<T> implements StackInterface<T> {
 		}
 	}
 
-    
-	public static void main(String[] args) {
-        Stack<Integer> stack = new Stack<>();	
-        stack.push(20);
-        stack.push(10);
-        stack.show();
-        stack.pop();
-        stack.show();
-        System.out.println(stack.peek());
-        System.out.print("Stack frame is empty(true) or not empty(false): " + stack.isEmpty());
-    }
-}
+} 
