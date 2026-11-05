@@ -12,15 +12,16 @@ public class Stack<T> implements StackInterface<T> {
     }
     @Override
     public T pop() throws EmptyStackException {
-        this.head = this.head.next;
-        T value = this.head.value;
-        return value;
+		Node<T> node = this.head;
+		this.head=this.head.next;
+        T value = node.value;
+		return value;
     }
     
     public T peek() {
-		System.out.printf("=================\n");
-		System.out.printf("---------------\n");
-		System.out.printf("%s ----- Value ---- > ", this.head.toString());
+        if(this.head == null){
+            return null;
+        }
         return this.head.value;
     }
     
@@ -50,5 +51,17 @@ public class Stack<T> implements StackInterface<T> {
 			curNode = curNode.next;
 		}
 	}
+
+    public void showPostfix() {
+
+		Node<T> curNode = this.head;
+		System.out.printf("=================\n");
+			System.out.printf("Postfix: ");
+		while(curNode!=null) {
+			System.out.printf("%c", curNode.value);
+			curNode = curNode.next;
+		}
+        System.out.println();
+    }
 
 } 
