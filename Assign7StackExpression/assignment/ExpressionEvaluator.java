@@ -5,14 +5,43 @@ public class ExpressionEvaluator implements ExpressionEvaluatorInterface {
     @Override
     public String infixToPostfix(String infix){
         Stack<Character> operators = new Stack<>();
+        infix = infix.replace(" ","");
         String postfix = "";
         for(int index = 0; index < infix.length(); index++){
-            if(infix.charAt(index) >= '0' && infix.charAt(index) <= '9'){
-               postfix = postfix + infix.charAt(index);
+            if(infix.charAt(index)=='('){
+                                
+                operators.push(infix.charAt(index));
+            }else if(infix.charAt(index)==')'){
+               
+                while(operators.peek()!=null){
+                    if(operators.peek() == '('){
+                        operators.pop();
+                        if(operators.peek()==null){
+                            break;
+                        }
+                    }
+
+                    char highestPrecidenceOperand = operators.pop();
+
+                    if(operators.peek() == null){
+                        postfix = postfix + highestPrecidenceOperand;
+                        break;
+                    }
+
+                    if(highestPrecidenceOperand<operators.peek()){
+                        postfix = postfix + highestPrecidenceOperand;
+                        break;
+                    }
+                    postfix = postfix + highestPrecidenceOperand;
+                }
+
+                
+            }else if(infix.charAt(index) >= '0' && infix.charAt(index) <= '9'){
+                   postfix = postfix + infix.charAt(index);
             
             
             }else if(operators.isEmpty()==false&& 
-                    operators.peek() < infix.charAt(index)){
+                    operators.peek() < infix.charAt(index) && operators.peek()!='('){
                 
                 while(operators.peek() != null) {
                     postfix = postfix + operators.pop();
@@ -42,7 +71,6 @@ public class ExpressionEvaluator implements ExpressionEvaluatorInterface {
             postfix = postfix + operators.pop();
         }
         System.out.printf("Postfix: %s\n", postfix) ;
-        operators.push('+');
         return postfix;
     }
 
