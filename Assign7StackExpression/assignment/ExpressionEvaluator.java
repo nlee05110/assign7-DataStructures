@@ -5,13 +5,23 @@ public class ExpressionEvaluator implements ExpressionEvaluatorInterface {
     @Override
     public String infixToPostfix(String infix){
         Stack<Character> operators = new Stack<>();
-        String str = "";
+        String postfix = "";
         for(int index = 0; index < infix.length(); index++){
             if(infix.charAt(index) >= '0' && infix.charAt(index) <= '9'){
-               str = str + infix.charAt(index);
+               postfix = postfix + infix.charAt(index);
             
+            
+            }else if(operators.isEmpty()==false&& 
+                    operators.peek() < infix.charAt(index)){
+                
+                while(operators.peek() != null) {
+                    postfix = postfix + operators.pop();
+                }
+                operators.push(infix.charAt(index));
+
             
             } else {
+
                 switch(infix.charAt(index)){
                     case '+': operators.push(infix.charAt(index));
                          break;
@@ -29,16 +39,42 @@ public class ExpressionEvaluator implements ExpressionEvaluatorInterface {
     
         }
         while(operators.peek() != null) {
-            str = str + operators.pop();
+            postfix = postfix + operators.pop();
         }
-        System.out.printf("Postfix: %s\n", str) ;
+        System.out.printf("Postfix: %s\n", postfix) ;
         operators.push('+');
-        return str;
+        return postfix;
     }
 
     @Override
     public int evaluatePostfix(String postfix){
-        return -1;
+        Stack<Integer> stack = new Stack<>();
+        int result = 0; 
+        
+        for(int index = 0; index < postfix.length(); index++){
+            if(postfix.charAt(index) >= '0' && postfix.charAt(index) <= '9'){
+                char ch = postfix.charAt(index);
+                stack.push(Integer.parseInt(String.valueOf(ch))); 
+            } else {
+                int first = Integer.parseInt(String.valueOf(stack.pop()));
+                int second = Integer.parseInt(String.valueOf(stack.pop()));
+                switch(postfix.charAt(index)){
+                    case '+': stack.push(first + second);
+                        break;
+                    case '-': stack.push(second-first);
+                        break; 
+                    case '*': stack.push(first*second);
+                        break;
+                    case '/': stack.push(second/first);
+                        break;
+               }
+                   
+            }
+        }
+
+        result = Integer.parseInt(String.valueOf(stack.pop()));
+        
+        return result;
     }
 
 

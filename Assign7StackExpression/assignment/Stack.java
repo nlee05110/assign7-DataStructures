@@ -63,5 +63,19 @@ public class Stack<T> implements StackInterface<T> {
 		}
         System.out.println();
     }
+    public void showEvalueatedPostfix() {
+
+		Node<T> curNode = this.head;
+		System.out.printf("=================\n");
+			System.out.printf("Postfix: ");
+		while(curNode!=null) {
+			System.out.printf("%d", curNode.value);
+			curNode = curNode.next;
+		}
+        System.out.println();
+    }
+
+
+
 
 } 
